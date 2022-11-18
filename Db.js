@@ -9,6 +9,7 @@ class Database{
     this.conn = mysql.createConnection({
       host: "172.20.1.18",
       user: "user",
+      password: "oh.j5Ri[4Xcpv!lf",
       database: this.databaseName
     });
     this.conn.connect((err)=>{

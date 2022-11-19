@@ -28,12 +28,13 @@ app.get('/humidity', (req, res)=>{
 
 app.post('/temperature/post', (req, res)=>{
   let dataObject = req.body;
-  console.log(req.body);
-  console.log(dataObject.value.toString());
-  console.log(dataObject.create_time);
-  let sql = `INSERT INTO ${"temperature"}(value, create_time) VALUES ?`;
+  // console.log(req.body);
+  // console.log(dataObject.value.toString());
+  // console.log(dataObject.create_time);
+  let sql = `INSERT INTO ${"temperature"}(value) VALUES ?`;
+  console.log(dataObject);
   let values = [
-    [dataObject.value.toString(), dataObject.create_time.toString()]
+    [dataObject.value.toString()]
   ];
   database.executePost(sql, values)
     .then((result)=>res.send("successfully added"))

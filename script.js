@@ -28,10 +28,10 @@ app.get('/humidity', (req, res)=>{
 
 app.post('/temperature/post', (req, res)=>{
   let dataObject = req.body;
-  let sql = `INSERT INTO ${"temperature"}(value) VALUES ?`;
-  console.log(dataObject);
+  let sql = `INSERT INTO temperature(value, create_time) VALUES ?`;
+  // console.log(dataObject);
   let values = [
-    [dataObject.value.toString()]
+    [dataObject.value.toString(), database.getTime()]
   ];
   database.executePost(sql, values)
     .then((result)=>res.send("successfully added"))
@@ -40,10 +40,10 @@ app.post('/temperature/post', (req, res)=>{
 
 app.post('/humidity/post', (req, res)=>{
   let dataObject = req.body;
-  let sql = `INSERT INTO ${"humidity"}(value) VALUES ?`;
-  console.log(dataObject);
+  let sql = `INSERT INTO humidity(value, create_time) VALUES ?`;
+  // console.log(dataObject);
   let values = [
-    [dataObject.value.toString()]
+    [dataObject.value.toString(), database.getTime()]
   ];
   database.executePost(sql, values)
     .then((result)=>res.send("successfully added"))

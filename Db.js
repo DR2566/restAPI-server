@@ -31,6 +31,7 @@ class Database{
     return prom;
   }
   executePost(sql, values){
+    // console.log(values);
     const prom = new Promise((resolve, reject)=>{
       database.conn.query(sql, [values],(err, res)=>{
         if(err){
@@ -40,6 +41,14 @@ class Database{
       })
     })
     return prom;
+  }
+  getTime(){
+    let clock = new Date();
+    var date = String(clock.getFullYear())+'-'+String((clock.getMonth()+1)).padStart(2, "0")+'-'+String(clock.getDate()).padStart(2, "0");
+    var time = String(clock.getHours()).padStart(2, "0") + ":" + String(clock.getMinutes()).padStart(2, "0") + ":" + String(clock.getSeconds()).padStart(2, "0");
+    let timeStamp = date +';'+time;
+    console.log(timeStamp);
+    return timeStamp;
   }
 }
 

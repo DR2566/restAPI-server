@@ -50,4 +50,16 @@ app.post('/humidity/post', (req, res)=>{
     .catch((err)=>{console.log(err)});
 })
 
+app.post('/pressure/post', (req, res)=>{
+  let dataObject = req.body;
+  let sql = `INSERT INTO pressure(value, create_time) VALUES ?`;
+  // console.log(dataObject);
+  let values = [
+    [dataObject.value.toString(), database.getTime()]
+  ];
+  database.executePost(sql, values)
+    .then((result)=>res.send("successfully added"))
+    .catch((err)=>{console.log(err)});
+})
+
 app.listen(3333);

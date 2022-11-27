@@ -24,6 +24,14 @@ app.get('/humidity', (req, res)=>{
     })
     .catch((err)=>{console.log(err)})
 })
+app.get('/pressure', (req, res)=>{
+  let sql = `SELECT * FROM ${"pressure"};`;
+  database.executeGet(sql)
+    .then((result)=>{
+      res.send(result);
+    })
+    .catch((err)=>{console.log(err)})
+})
 
 
 app.post('/temperature/post', (req, res)=>{

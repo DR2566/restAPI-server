@@ -2,7 +2,6 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 const database = require('./Db');
-database.createConnection();
 
 
 app.use(cors({origin: "*"}));
@@ -32,12 +31,19 @@ app.get('/pressure', (req, res)=>{
     })
     .catch((err)=>{console.log(err)})
 })
+app.get('/uv', (req, res)=>{
+  let sql = `SELECT * FROM ${"uv"};`;
+  database.executeGet(sql)
+    .then((result)=>{
+      res.send(result);
+    })
+    .catch((err)=>{console.log(err)})
+})
 
 
 app.post('/temperature/post', (req, res)=>{
   let dataObject = req.body;
   let sql = `INSERT INTO temperature(value, create_time) VALUES ?`;
-  // console.log(dataObject);
   let values = [
     [dataObject.value.toString(), database.getTime()]
   ];
@@ -45,11 +51,9 @@ app.post('/temperature/post', (req, res)=>{
     .then((result)=>res.send("successfully added"))
     .catch((err)=>{console.log(err)});
 })
-
 app.post('/humidity/post', (req, res)=>{
   let dataObject = req.body;
   let sql = `INSERT INTO humidity(value, create_time) VALUES ?`;
-  // console.log(dataObject);
   let values = [
     [dataObject.value.toString(), database.getTime()]
   ];
@@ -57,11 +61,19 @@ app.post('/humidity/post', (req, res)=>{
     .then((result)=>res.send("successfully added"))
     .catch((err)=>{console.log(err)});
 })
-
 app.post('/pressure/post', (req, res)=>{
   let dataObject = req.body;
   let sql = `INSERT INTO pressure(value, create_time) VALUES ?`;
-  // console.log(dataObject);
+  let values = [
+    [dataObject.value.toString(), database.getTime()]
+  ];
+  database.executePost(sql, values)
+    .then((result)=>res.send("successfully added"))
+    .catch((err)=>{console.log(err)});
+})
+app.post('/uv/post', (req, res)=>{
+  let dataObject = req.body;
+  let sql = `INSERT INTO uv(value, create_time) VALUES ?`;
   let values = [
     [dataObject.value.toString(), database.getTime()]
   ];

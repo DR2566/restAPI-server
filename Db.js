@@ -14,12 +14,14 @@ class Database{
     });
     this.conn.connect((err)=>{
       if(err){
-	console.log("something went wrong");
-	};
-      console.log("Connected!!!");
+	      console.log("something went wrong");
+	    }else{
+        console.log("Connected!!!");        
+      }
     });
   }
   executeGet(sql){
+    this.createConnection();
     const prom = new Promise((resolve, reject)=>{
       database.conn.query(sql, (err, res)=>{
         if(err){
@@ -28,10 +30,11 @@ class Database{
         return resolve(res);
       })
     })
+    this.conn.end();
     return prom;
   }
   executePost(sql, values){
-    // console.log(values);
+    this.createConnection();
     const prom = new Promise((resolve, reject)=>{
       database.conn.query(sql, [values],(err, res)=>{
         if(err){
@@ -40,6 +43,7 @@ class Database{
         return resolve(res);
       })
     })
+    this.conn.end();
     return prom;
   }
   getTime(){

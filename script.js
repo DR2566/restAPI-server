@@ -2,10 +2,22 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 const database = require('./Db');
+const axios = requre('axios');
 
 
 app.use(cors({origin: "*"}));
 app.use(express.json());
+
+//****************** SENSOR TESTER *******************//
+
+app.get('/test', (req, res)=>{
+  axios.get('http://172.20.2.190:1111/test')
+    .then((data)=>{
+      res.send(data);
+    })
+})
+
+//****************** SENSOR TESTER *******************//
 
 app.get('/temperature', (req, res)=>{
   let sql = `SELECT * FROM ${"temperature"};`;

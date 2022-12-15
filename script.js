@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 const database = require('./Db');
-const axios = requre('axios');
+const axios = require('axios');
 
 
 app.use(cors({origin: "*"}));

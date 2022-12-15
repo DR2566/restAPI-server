@@ -13,7 +13,11 @@ app.use(express.json());
 app.get('/test', (req, res)=>{
   axios.get('http://172.20.2.190:1111/test')
     .then((data)=>{
-      res.send(data);
+      console.log(data.data);
+      res.send(data.data);
+    })
+    .catch((err)=>{
+      console.log(err);
     })
 })
 
@@ -23,6 +27,7 @@ app.get('/temperature', (req, res)=>{
   let sql = `SELECT * FROM ${"temperature"};`;
   database.executeGet(sql) //this method returns a promise
     .then((result)=>{
+      console.log(typeof result[0][0]);
       res.send(result);
     })
     .catch((err)=>{console.log(err)})

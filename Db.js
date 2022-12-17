@@ -12,34 +12,30 @@ class Database{
       password: "oh.j5Ri[4Xcpv!lf",
       database: this.databaseName
     });
-    let prom = new Promise((resolve, reject)=>{
-      this.conn.connect((err)=>{
-        if(err){
-          console.log("something went wrong");
-          reject();
-        }else{
-          console.log("Connected!!!");        
-          resolve();
-        }
-      });
+    this.conn.connect((err)=>{
+      if(err){
+        console.log("something went wrong");
+      }else{
+        console.log("Connected!!!");        
+      }
     })
-    return prom;
   }
-  async executeGet(sql){
-    await this.createConnection();
+  executeGet(sql){
+    this.createConnection();
+    console.log(sql);
     const prom = new Promise((resolve, reject)=>{
       this.conn.query(sql, (err, res)=>{
         if(err){
           return reject(err);
         }
         return resolve(res);
-      })
-    })
+      });
     this.conn.end();
+    })
     return prom;
   }
-  async executePost(sql, values){
-    await this.createConnection();
+  executePost(sql, values){
+    this.createConnection();
     const prom = new Promise((resolve, reject)=>{
       this.conn.query(sql, [values],(err, res)=>{
         if(err){
@@ -52,14 +48,15 @@ class Database{
     return prom;
   }
 
-  async executeAuth(user){
-    await this.createConnection();
+  executeAuth(user){
+    this.createConnection();
     const prom = new Promise((resolve, reject)=>{
       let sql = `SELECT password FROM auth WHERE user = '${user}'`;
       this.conn.query(sql, (err, res)=>{
         if(err){
           return reject(err);
         }
+        console.log(res)
         return resolve(res);
       })
     })

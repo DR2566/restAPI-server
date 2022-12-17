@@ -106,7 +106,6 @@ app.post('/auth/post', (req, res)=>{
   let password = dataObject.password;
   database.executeAuth(user, password)
     .then((result)=>{
-      // console.log(result);
       if(result.length){ // if there is such user
         let associatedPassword = result[0].password;
         if(associatedPassword === password){ // if the credentials matches

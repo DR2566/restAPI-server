@@ -12,18 +12,23 @@ class Database{
       password: "oh.j5Ri[4Xcpv!lf",
       database: this.databaseName
     });
-    this.conn.connect((err)=>{
-      if(err){
-	      console.log("something went wrong");
-	    }else{
-        console.log("Connected!!!");        
-      }
-    });
+    let prom = new Promise((resolve, reject)=>{
+      this.conn.connect((err)=>{
+        if(err){
+          console.log("something went wrong");
+          reject();
+        }else{
+          console.log("Connected!!!");        
+          resolve();
+        }
+      });
+    })
+    return prom;
   }
-  executeGet(sql){
-    this.createConnection();
+  async executeGet(sql){
+    await this.createConnection();
     const prom = new Promise((resolve, reject)=>{
-      database.conn.query(sql, (err, res)=>{
+      this.conn.query(sql, (err, res)=>{
         if(err){
           return reject(err);
         }
@@ -33,10 +38,10 @@ class Database{
     this.conn.end();
     return prom;
   }
-  executePost(sql, values){
-    this.createConnection();
+  async executePost(sql, values){
+    await this.createConnection();
     const prom = new Promise((resolve, reject)=>{
-      database.conn.query(sql, [values],(err, res)=>{
+      this.conn.query(sql, [values],(err, res)=>{
         if(err){
           return reject(err);
         }
@@ -46,6 +51,21 @@ class Database{
     this.conn.end();
     return prom;
   }
+
+  async executeAuth(user){
+    await this.createConnection();
+    const prom = new Promise((resolve, reject)=>{
+      let sql = `SELECT password FROM auth WHERE user = '${user}'`;
+      this.conn.query(sql, (err, res)=>{
+        if(err){
+          return reject(err);
+        }
+        return resolve(res);
+      })
+    })
+    return prom
+  }
+
   getTime(){
     let clock = new Date();
     var date = String(clock.getFullYear())+'-'+String((clock.getMonth()+1)).padStart(2, "0")+'-'+String(clock.getDate()).padStart(2, "0");

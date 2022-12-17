@@ -27,7 +27,6 @@ app.get('/temperature', (req, res)=>{
   let sql = `SELECT * FROM ${"temperature"};`;
   database.executeGet(sql) //this method returns a promise
     .then((result)=>{
-      console.log(typeof result[0][0]);
       res.send(result);
     })
     .catch((err)=>{console.log(err)})
@@ -98,5 +97,34 @@ app.post('/uv/post', (req, res)=>{
     .then((result)=>res.send("successfully added"))
     .catch((err)=>{console.log(err)});
 })
+
+//****************** AUTHENTICATION *******************//
+
+app.post('/auth/post', (req, res)=>{
+  let dataObject = req.body;
+  let user = dataObject.user;
+  let password = dataObject.password;
+  database.executeAuth(user, password)
+    .then((result)=>{
+      // console.log(result);
+      if(result.length){ // if there is such user
+        let associatedPassword = result[0].password;
+        if(associatedPassword === password){ // if the credentials matches
+          res.send('true'); // the authentication passed successfully
+        }else{
+          res.send('false'); // the password for that user doesn't match the right password
+        }        
+      }else{
+        res.send('false') // if there is no such user
+      }
+    })
+    .catch((err)=>{
+      console.log(err);
+      res.send(err);
+    })
+})
+
+//****************** AUTHENTICATION *******************//
+
 
 app.listen(3333);

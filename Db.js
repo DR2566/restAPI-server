@@ -30,7 +30,7 @@ class Database{
         }
         return resolve(res);
       });
-    this.conn.end();
+      this.conn.end();
     })
     return prom;
   }
@@ -42,9 +42,9 @@ class Database{
           return reject(err);
         }
         return resolve(res);
-      })
+      });
+      this.conn.end();
     })
-    this.conn.end();
     return prom;
   }
 
@@ -59,7 +59,8 @@ class Database{
         console.log(res)
         return resolve(res);
       })
-    })
+      this.conn.end();
+    });
     return prom
   }
 
